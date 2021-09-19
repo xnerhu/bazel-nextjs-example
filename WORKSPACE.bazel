@@ -18,10 +18,6 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
-load("@rules_proto_grpc//js:repositories.bzl", rules_proto_grpc_js_repos = "js_repos")
-
-rules_proto_grpc_js_repos()
-
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 yarn_install(
