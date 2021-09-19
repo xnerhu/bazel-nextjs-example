@@ -1,0 +1,43 @@
+{
+  "name": "bazel-example",
+  "scripts": {
+    "build": "bazel build //...",
+    "test": "bazel test //... --build_tests_only"
+  },
+  "devDependencies": {
+    "@bazel/bazelisk": "^1.10.1",
+    "@bazel/buildifier": "^4.2.1",
+    "@bazel/ibazel": "^0.15.10",
+    "@bazel/labs": "4.2.0",
+    "@bazel/runfiles": "4.2.0",
+    "@bazel/typescript": "4.2.0",
+    "@types/node": "^16.7.4",
+    "@types/react": "^17.0.21",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-helmet": "^6.1.2",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
+    "babel-plugin-styled-components": "^1.13.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "file-loader": "^6.2.0",
+    "next": "11.1.3-canary.24",
+    "next-pwa": "^5.3.1",
+    "prettier": "^2.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "ts-loader": "^8.0.11",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3",
+    "webpack": "^5.51.1",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.1.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {}
+}

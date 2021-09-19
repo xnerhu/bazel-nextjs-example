@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    env:
+      BAZELISK_CACHE_VERSION: 1
+      BAZEL_CACHE_VERSION: 1
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: |
+            node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        env:
+          ADBLOCK: true
+
+      - name: Restore Bazelisk cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/bazelisk
+          key: ${{ runner.os }}-bazelisk-${{ env.BAZELISK_CACHE_VERSION }}-${{ hashFiles('tools/bazel_deps.bzl') }}
+          restore-keys: |
+            ${{ runner.os }}-bazelisk-${{ env.BAZELISK_CACHE_VERSION }}-
+
+      - name: Bazel hash
+        id: bazel-hash
+        shell: bash
+        run: |
+          echo "::set-output name=hash::$(/bin/date -u "+%Y%m%d%s")"
+
+      - name: Restore Bazel cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/bazel
+          key: ${{ runner.os }}-bazel-${{ env.BAZEL_CACHE_VERSION }}-${{ steps.bazel-hash.outputs.hash }}
+          restore-keys: |
+            ${{ runner.os }}-bazel-${{ env.BAZEL_CACHE_VERSION }}-
+
+      - name: Build
+        run: yarn build

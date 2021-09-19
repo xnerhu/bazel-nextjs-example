@@ -1,0 +1,38 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+load("@npm//next:index.bzl", "next")
+
+filegroup(
+    name = "source_files",
+    srcs = glob([
+        "src/**/*",
+    ]) + [
+        "next.config.js",
+        "next-env.d.ts",
+        "tsconfig.json",
+        "babel.config.js",
+    ],
+)
+
+copy_to_bin(
+    name = "copy_source_files",
+    srcs = ["source_files"],
+)
+
+DEPS = [
+    "@npm//@types/node",
+    "@npm//@types/react",
+    "@npm//next-pwa",
+    "@npm//next",
+    "@npm//react",
+    "@npm//react-dom",
+    "@npm//typescript",
+]
+
+next(
+    name = "build",
+    outs = [".next"],
+    args = [
+        "build $(RULEDIR)",
+    ],
+    data = [":copy_source_files"] + DEPS,
+)
